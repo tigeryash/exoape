@@ -99,7 +99,8 @@ nav {
   @apply flex flex-col gap-[.5em];
 }
 
-.link .social {
+.link,
+.social {
   padding-bottom: 6px;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
@@ -135,7 +136,8 @@ nav {
 }
 
 .link a::after,
-.social a::after .menu-footer a::after {
+.social a::after,
+.menu-footer a::after {
   content: "";
   position: absolute;
   width: 100%;
@@ -149,7 +151,8 @@ nav {
 }
 
 .link a:hover::after,
-.social a:hover::after .menu-footer a:hover::after {
+.social a:hover::after,
+.menu-footer a:hover::after {
   transform: scaleX(1);
   transform-origin: left;
 }

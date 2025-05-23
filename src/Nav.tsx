@@ -1,14 +1,15 @@
-import { useGSAP } from "@gsap/react";
 import { useRef, useState } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
-const Nav = ({
-  isOpen,
-  setIsOpen,
-}: {
+type Props = {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-}) => {
+  isAnimating: boolean;
+  setIsAnimating: (value: boolean) => void;
+};
+
+const Nav = ({ isOpen, setIsOpen, isAnimating, setIsAnimating }: Props) => {
   const menuToggle = useRef<HTMLDivElement>(null);
   const menuOverlay = useRef<HTMLDivElement>(null);
   const menuContent = useRef<HTMLDivElement>(null);
@@ -18,7 +19,7 @@ const Nav = ({
 
   const [previewImg, setPreviewImg] = useState<string>("");
 
-  useGSAP(() => {
+  const animationMenuToggle = () => {
     gsap.to(
       menuButton.current?.id === "menu-open" ? menuButton.current : null,
       {
@@ -44,7 +45,46 @@ const Nav = ({
         ease: "power2.out",
       }
     );
-  });
+  };
+
+  const openMenu = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setIsOpen(!isOpen);
+  };
+
+  useGSAP(() => {
+    if (!isAnimating) return;
+    animationMenuToggle();
+
+    gsap.to(menuContent.current, {
+      rotation: 0,
+      x: 0,
+      y: 0,
+      scale: 1,
+      opacity: 1,
+      duration: 1.25,
+      ease: "power4.inOut",
+    });
+
+    gsap.to([".link a", ".social a"], {
+      y: "0%",
+      opacity: 1,
+      duration: 1,
+      delay: 0.75,
+      stagger: 0.1,
+      ease: "power3.inOut",
+    });
+
+    gsap.to(menuOverlay.current, {
+      clipPath: "polygon(0 0, 100% 0, 100% 175%, 0 100%)",
+      duration: 1.25,
+      ease: "power4.inOut",
+      onComplete: () => {
+        setIsAnimating(false);
+      },
+    });
+  }, [isAnimating]);
 
   return (
     <>
@@ -52,11 +92,7 @@ const Nav = ({
         <div className="logo">
           <a href="">Void Construct</a>
         </div>
-        <div
-          className="menu-toggle"
-          ref={menuToggle}
-          onClick={() => setIsOpen(!isOpen)}
-        >
+        <div className="menu-toggle" ref={menuToggle} onClick={openMenu}>
           <p ref={menuButton} id={isOpen ? "menu-close" : "menu-open"}>
             {isOpen ? "Close" : "Menu"}
           </p>

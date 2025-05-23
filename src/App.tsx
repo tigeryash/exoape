@@ -7,8 +7,13 @@ function App() {
   const [isAnimating, setIsAnimating] = useState(false);
   return (
     <>
-      <Nav isOpen={isOpen} setIsOpen={setIsOpen} />
-      <Content />
+      <Nav
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        isAnimating={isAnimating}
+        setIsAnimating={setIsAnimating}
+      />
+      <Content isAnimating={isAnimating} />
     </>
   );
 }

@@ -1,7 +1,21 @@
+import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
+import gsap from "gsap";
 
-const Content = () => {
+const Content = ({ isAnimating }: { isAnimating: boolean }) => {
   const container = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (!isAnimating) return;
+    gsap.to(container.current, {
+      rotation: 10,
+      x: 300,
+      y: 450,
+      scale: 1.5,
+      duration: 1.25,
+      ease: "power4.inOut",
+    });
+  }, [isAnimating]);
 
   return (
     <main className="container" ref={container}>
