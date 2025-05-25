@@ -13,7 +13,7 @@ function App() {
         isAnimating={isAnimating}
         setIsAnimating={setIsAnimating}
       />
-      <Content isAnimating={isAnimating} />
+      <Content isAnimating={isAnimating} isOpen={isOpen} />
     </>
   );
 }
